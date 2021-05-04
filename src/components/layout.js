@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 
 export const Container = styled.main`
   height: calc(100vh - 40px);
-  width: 100%;
+  /* width: 100%; */
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
-
+  padding: 2rem;
   @media (min-width: 1024px) {
     width: 1000px;
     padding: 1rem;
@@ -78,6 +78,7 @@ export const Footer = styled.footer`
   width: 100%;
   text-align: center;
   color: #fff;
+  margin-top: 40px;
 `;
 
 export const CardFooter = styled.footer`
@@ -109,5 +110,33 @@ export const CardFooter = styled.footer`
   span {
     cursor: pointer;
     transition: all 0.3s ease;
+  }
+`;
+
+export const CircularCard = styled.div`
+  min-height: 300px;
+  width: 300px;
+
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 0rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  > div > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transform-origin: center center;
+    span {
+      position: absolute;
+      font-size: 2rem;
+    }
+    svg {
+      height: 100%;
+      width: 100%;
+    }
   }
 `;

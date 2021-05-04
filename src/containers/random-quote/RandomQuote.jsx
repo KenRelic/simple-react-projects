@@ -92,32 +92,35 @@ const RandomQuote = () => {
       style={{
         width: "100%",
         transition: "all 0.3s ease",
-        height: "100%",
+        height: "calc(100% + 80px)",
         backgroundColor: colors[colorIndex],
       }}>
-      <Container>
+      <Container id="quote-box">
         <Header>
           <h1>Random Quotes</h1>
         </Header>
         <Layout>
           <Card color={colors[colorIndex]}>
             <div>
-              <h2>
+              <h2 id="text">
                 <span className="quote-marks">"</span> {quotes[index].quote}
                 <span className="quote-marks">"</span>
                 <hr />
               </h2>
-              <p className="author">{quotes[index].author}</p>
+              <p id="author" className="author">
+                {quotes[index].author}
+              </p>
             </div>
             <CardFooter color={colors[colorIndex]}>
               <a
                 href={`http://twitter.com/intent/tweet?text="${quotes[index].quote}" -- ${quotes[index].author} `}
-                target="_blank">
+                target="_blank"
+                id="tweet-quote">
                 {" "}
                 {<TwitterCircleFilled />}
               </a>{" "}
-              <Button type="primary" shape="round" onClick={handleNext}>
-                Next Quote
+              <Button type="primary" shape="round" onClick={handleNext} id>
+                New Quote
               </Button>
             </CardFooter>
           </Card>
