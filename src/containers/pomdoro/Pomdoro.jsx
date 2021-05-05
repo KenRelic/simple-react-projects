@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSprings, animated, interpolate } from "react-spring";
 import { useGesture } from "react-use-gesture";
 import axios from "axios";
@@ -15,8 +15,56 @@ import {
   CardFooter,
 } from "../../components/layout.js";
 import * as styles from "./pomdoro.module.css";
+import playBtn from "./../../images/images-rps/play-btn.svg";
+import pauseBtn from "./../../images/images-rps/pause-btn.svg";
 
 const Pomdoro = () => {
+  const [appState, setAppState] = React.useState({
+    time: 25 * 60 * 1000,
+    state: "PAUSED",
+    breakTime: 5 * 1000 * 60,
+  });
+
+  const startClock = () => {
+    // setAppState({ ...appState, state: "PLAYING" });
+    setAppState((prev) => {
+      return {
+        ...prev,
+        state: "PLAYING",
+      };
+    });
+  };
+  const pauseClock = () => {
+    // setAppState({ ...appState, state: "PAUSED" });s
+    setAppState((prev) => {
+      return {
+        ...prev,
+        state: "PAUSED",
+      };
+    });
+  };
+
+  const startPomdoro = () => {
+    setAppState({ ...appState, time: appState.time - 1000 });
+  };
+
+  useEffect(() => {
+    // startPomdoro();
+    const countdown = setInterval(() => {
+      // console.log(appState);
+      // startPomdoro;
+      setAppState((prev) => {
+        return {
+          ...prev,
+          time: appState.time - 1000,
+        };
+      });
+    }, 1000);
+    return () => {
+      window.clearInterval(countdown);
+    };
+  }, [appState]);
+
   return (
     <div id={styles.layout}>
       <div id={styles.main}>
@@ -27,13 +75,43 @@ const Pomdoro = () => {
           <button className={styles.btn2}>short break</button>
           <button className={styles.btn3}>long break</button>
         </div>
-
         <div className={styles.canvasWrapper}>
-          <Canvas />
           <div className={styles.timerWrapper}>
-            <h2 id={styles.timer}>17:59</h2>
-            <h3 className={styles.currentState}>PAUSE</h3>
+            <h2 id={styles.timer}>
+              {Math.floor(appState.time / 1000 / 60)}:
+              {(appState.time / 1000) % 60}
+            </h2>
+            <h3 className={styles.currentState}>{appState.state}</h3>
+            {appState.state === "PAUSED" ? (
+              <img
+                src={playBtn}
+                className={"control-btn"}
+                width={40}
+                onClick={startClock}
+              />
+            ) : (
+              <img
+                src={pauseBtn}
+                onClick={pauseClock}
+                className={"control-btn"}
+                width={40}
+              />
+            )}
           </div>
+          <Progress
+            className={styles.progressBar}
+            type="circle"
+            strokeColor={{
+              "0%": "tomato",
+              "100%": "orange",
+            }}
+            strokeWidth={5}
+            style={{ width: "100%", height: "100%" }}
+            percent={appState.time}
+            format={() => ``}
+            width={"80%"}
+            // status="active"
+          />
         </div>
       </div>
     </div>
