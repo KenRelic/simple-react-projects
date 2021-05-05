@@ -21,9 +21,27 @@ import pauseBtn from "./../../images/images-rps/pause-btn.svg";
 const Pomdoro = () => {
   const [appState, setAppState] = React.useState({
     time: 25 * 60 * 1000,
-    state: "PAUSED",
+    state: "IDLE",
     breakTime: 5 * 1000 * 60,
   });
+
+  let countdown;
+
+  const startPomdoro = () => {
+    countdown = setInterval(() => {
+      // console.log(appState);
+      // startPomdoro;
+      setAppState((prev) => {
+        return {
+          ...prev,
+          time: prev.time - 1000,
+        };
+      });
+      console.log("CALLING", appState);
+    }, 1000);
+
+    console.log(countdown);
+  };
 
   const startClock = () => {
     // setAppState({ ...appState, state: "PLAYING" });
@@ -33,7 +51,9 @@ const Pomdoro = () => {
         state: "PLAYING",
       };
     });
+    startPomdoro();
   };
+
   const pauseClock = () => {
     // setAppState({ ...appState, state: "PAUSED" });s
     setAppState((prev) => {
@@ -42,28 +62,26 @@ const Pomdoro = () => {
         state: "PAUSED",
       };
     });
-  };
 
-  const startPomdoro = () => {
-    setAppState({ ...appState, time: appState.time - 1000 });
+    window.clearInterval(countdown);
   };
 
   useEffect(() => {
     // startPomdoro();
-    const countdown = setInterval(() => {
-      // console.log(appState);
-      // startPomdoro;
-      setAppState((prev) => {
-        return {
-          ...prev,
-          time: appState.time - 1000,
-        };
-      });
-    }, 1000);
-    return () => {
-      window.clearInterval(countdown);
-    };
-  }, [appState]);
+    // const countdown = setInterval(() => {
+    //   // console.log(appState);
+    //   // startPomdoro;
+    //   setAppState((prev) => {
+    //     return {
+    //       ...prev,
+    //       time: appState.time - 1000,
+    //     };
+    //   });
+    // }, 1000);
+    // return () => {
+    //   window.clearInterval(countdown);
+    // };
+  }, [appState.time]);
 
   return (
     <div id={styles.layout}>
@@ -82,7 +100,7 @@ const Pomdoro = () => {
               {(appState.time / 1000) % 60}
             </h2>
             <h3 className={styles.currentState}>{appState.state}</h3>
-            {appState.state === "PAUSED" ? (
+            {appState.state === "IDLE" ? (
               <img
                 src={playBtn}
                 className={"control-btn"}
