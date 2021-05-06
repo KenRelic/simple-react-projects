@@ -27,7 +27,13 @@ const Markdown = () => {
         </div>
         <div className={"preview"}>
           <p className={"sub-title"}>PREVIEW</p>
-          <div className={"preview-textarea"}>{marked(markdown)}</div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: marked(markdown),
+            }}
+            className={"preview-textarea"}>
+            {/* {marked(markdown)} */}
+          </div>
         </div>
       </section>
     </main>

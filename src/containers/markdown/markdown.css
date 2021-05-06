@@ -28,7 +28,8 @@
 .markdown-textarea,
 .preview-textarea {
   width: 100%;
-  /* height: 100%; */
+  height: inherit;
+  overflow-y: auto;
   flex: 1;
   border: none;
   background-color: aliceblue;
@@ -37,4 +38,24 @@
 
 textarea:focus {
   outline: 1px solid greenyellow;
+}
+
+h1 {
+  font-weight: unset;
+  font-size: 2.3rem;
+}
+h2 {
+  font-weight: unset;
+}
+
+@media screen and (max-width: 1000px) {
+  .content-wrapper {
+    display: block;
+    flex-direction: column;
+    min-width: inherit;
+  }
+  .markdown,
+  .preview {
+    width: 100%;
+  }
 }
