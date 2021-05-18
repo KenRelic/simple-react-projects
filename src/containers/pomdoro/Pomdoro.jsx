@@ -20,27 +20,48 @@ import pauseBtn from "./../../images/images-rps/pause-btn.svg";
 
 const Pomdoro = () => {
   const [appState, setAppState] = React.useState({
-    time: 25 * 60 * 1000,
+    // time: 25 * 60 * 1000,
+    totalTime: 60000,
     state: "IDLE",
     breakTime: 5 * 1000 * 60,
   });
+  const [count, setCount] = React.useState(60000);
 
   let countdown;
 
-  const startPomdoro = () => {
-    countdown = setInterval(() => {
-      // console.log(appState);
-      // startPomdoro;
-      setAppState((prev) => {
-        return {
-          ...prev,
-          time: prev.time - 1000,
-        };
-      });
-      console.log("CALLING", appState);
-    }, 1000);
+  function countTime(time) {
+    console.log(time);
+    if (time < 0) {
+      setCount(0);
+      return window.clearInterval(countdown);
+    } else {
+      setCount((time) => time - 1000);
+      return countTime(time - 1000);
+    }
+  }
 
-    console.log(countdown);
+  const startPomdoro = () => {
+    // countdown = setInterval(() => {
+    //   // console.log(appState);
+    //   // startPomdoro;
+    //   // setAppState((prev) => {
+    //   //   return {
+    //   //     ...prev,
+    //   //     time: prev.time - 1000,
+    //   //   };
+    //   // });
+    //   setCount(count - 1000);
+
+    //   console.log("CALLING", count);
+    // }, 1000);
+
+    // console.log(countdown);
+    // window.clearInterval(countdown)
+    console.log("COUNT STARTED", count);
+
+    setInterval(() => {
+      countTime(count);
+    }, 1000);
   };
 
   const startClock = () => {
@@ -56,18 +77,23 @@ const Pomdoro = () => {
 
   const pauseClock = () => {
     // setAppState({ ...appState, state: "PAUSED" });s
+    console.log(appState);
     setAppState((prev) => {
       return {
         ...prev,
         state: "PAUSED",
       };
     });
-
-    window.clearInterval(countdown);
+    clearInterval(countdown);
   };
 
   useEffect(() => {
-    // startPomdoro();
+    // if (appState.state === "PLAYING") {
+    //   startPomdoro();
+    //   return () => {
+    //     window.clearInterval(countdown);
+    //   };
+    // }
     // const countdown = setInterval(() => {
     //   // console.log(appState);
     //   // startPomdoro;
@@ -78,10 +104,14 @@ const Pomdoro = () => {
     //     };
     //   });
     // }, 1000);
-    // return () => {
-    //   window.clearInterval(countdown);
-    // };
-  }, [appState.time]);
+
+    return () => {
+      if (appState.state === "PAUSED") {
+        console.log(appState);
+        clearInterval(countdown);
+      }
+    };
+  }, [count, appState.time, pauseClock, appState.state]);
 
   return (
     <div id={styles.layout}>
@@ -96,14 +126,13 @@ const Pomdoro = () => {
         <div className={styles.canvasWrapper}>
           <div className={styles.timerWrapper}>
             <h2 id={styles.timer}>
-              {Math.floor(appState.time / 1000 / 60)}:
-              {(appState.time / 1000) % 60}
+              {Math.floor(count / 1000)}:{(count / 1000) % 60}
             </h2>
             <h3 className={styles.currentState}>{appState.state}</h3>
-            {appState.state === "IDLE" ? (
+            {appState.state === "IDLE" || appState.state === "PAUSED" ? (
               <img
                 src={playBtn}
-                className={"control-btn"}
+                className={styles.controlBtn}
                 width={40}
                 onClick={startClock}
               />
@@ -111,7 +140,7 @@ const Pomdoro = () => {
               <img
                 src={pauseBtn}
                 onClick={pauseClock}
-                className={"control-btn"}
+                className={styles.controlBtn}
                 width={40}
               />
             )}
@@ -123,14 +152,16 @@ const Pomdoro = () => {
               "0%": "tomato",
               "100%": "orange",
             }}
-            strokeWidth={5}
+            strokeWidth={3}
             style={{ width: "100%", height: "100%" }}
-            percent={appState.time}
+            percent={100 - (count / appState.totalTime) * 100}
             format={() => ``}
             width={"80%"}
             // status="active"
           />
         </div>
+
+        <div className={styles.settings}>⚙</div>
       </div>
     </div>
     // <Container id="quote-box">

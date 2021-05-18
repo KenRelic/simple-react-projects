@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-x: hidden;
 }
 #main {
   position: relative;
@@ -100,6 +101,13 @@
 .timerWrapper {
   color: #fff;
   text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /*justify-content: center; */
+  place-content: center;
+  text-align: center;
   z-index: 3;
 }
 
@@ -115,12 +123,12 @@
   font-size: 1.5rem;
   text-align: center;
   letter-spacing: 5px;
-  margin-top: -2rem;
+  /* margin-top: -2rem; */
 }
 
 #timer {
   font-size: 7rem;
-  line-height: 0.3;
+  /* line-height: 0.3; */
 }
 
 .progressBar {
@@ -131,7 +139,27 @@
   transform: translate(10%, 10%);
 }
 
-.control-btn {
-  width: 20px;
+.controlBtn {
+  width: 30px;
   cursor: pointer;
+  margin-top: 30px;
+  justify-self: end;
+  align-self: center;
+}
+
+.settings {
+  font-size: 3rem;
+  text-align: center;
+  margin: 2rem auto;
+  color: #f97072;
+  font-weight: bold;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid grey;
 }
